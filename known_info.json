@@ -1,0 +1,81 @@
+{
+    "OBJECT_DATA": {
+        "drawer": {
+            "synonims": ["drawer", "id_drawer"],
+            "object_id": "Drawer|+00.64|+00.76|-00.65",
+            "action_location": {
+                "position": {"x": 0.25, "y": 0.9009992480278015, "z": -0.75}, 
+                "rotation": {"x": -0.0, "y": 90.0, "z": 0.0}
+            }
+        },
+        "knife": {
+            "synonims": ["knife", "id_knife"],
+            "object_id": "Knife|+00.87|+00.70|-00.60",
+            "action_location": {
+                "position": {"x": 0.25, "y": 0.9009992480278015, "z": -0.75}, 
+                "rotation": {"x": -0.0, "y": 90.0, "z": 0.0}
+            }
+        },
+
+        "bread": {
+            "synonims": ["bread"],
+            "object_id": "Bread|-00.78|+01.00|+00.21",
+            "action_location": {
+                "position": {"x": 0.0, "y": 0.9009992480278015, "z": 0.25}, 
+                "rotation": {"x": -0.0, "y": 270.0, "z": 0.0}
+            }
+        },
+        "tomato": {
+            "synonims": ["tomato"],
+            "object_id": "Tomato|-00.87|+00.96|-00.10",
+            "action_location": {
+                "position": {"x": 0.0, "y": 0.9009992480278015, "z": 0.25}, 
+                "rotation": {"x": -0.0, "y": 270.0, "z": 0.0}
+            }
+        },        
+        
+        "bread_sliced": {
+            "synonims": ["bread_sliced"],
+            "object_id": "Bread|-00.78|+01.00|+00.21|BreadSliced_1",
+            "action_location": {
+                "position": {"x": 0.0, "y": 0.9009992480278015, "z": 0.25}, 
+                "rotation": {"x": -0.0, "y": 270.0, "z": 0.0}
+            }
+        },        
+
+        "toaster": {
+            "synonims": ["toaster"],
+            "object_id": "Toaster|+00.98|+00.90|+00.33",
+            "action_location": {
+                "position": {"x": 0.25, "y": 0.9009992480278015, "z": -0.0}, 
+                "rotation": {"x": -0.0, "y": 90.00001525878906, "z": -0.0}
+            }
+        },        
+
+        "bowl": {
+            "synonims": ["bowl"],
+            "object_id": "Bowl|+00.79|+00.90|-00.12",
+            "action_location": {
+                "position": {"x": 0.25, "y": 0.9009992480278015, "z": -0.0}, 
+                "rotation": {"x": -0.0, "y": 90.00001525878906, "z": -0.0}
+            }
+        },                
+
+        "fridge": {
+            "synonims": ["fridge"],
+            "object_id": "Fridge|+00.97|+00.00|+01.25",
+            "action_location": {
+                "position": {"x": 0.0, "y": 0.9009992480278015, "z": 1.0}, 
+                "rotation": {"x": -0.0, "y": 90.00001525878906, "z": 0.0}
+            }
+        }, 
+        "egg": {
+            "synonims": ["egg"],
+            "object_id": "Egg|+00.83|+01.11|+01.10",
+            "action_location": {
+                "position": {"x": 0.0, "y": 0.9009992480278015, "z": 1.0}, 
+                "rotation": {"x": -0.0, "y": 90.00001525878906, "z": 0.0}
+            }
+        }                
+    }   
+}

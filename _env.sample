@@ -1,0 +1,4 @@
+SOURCE=<YOUR 'OPENAI_API' compatible provider's name>
+BASE_URL=<BASE_URL of your OPENAI_API provider>
+API_KEY=<YOUR SECRET API KEY>
+

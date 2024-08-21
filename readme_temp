@@ -1,0 +1,59 @@
+from ai2thor.controller import Controller
+controller = Controller()
+event = controller.step("RotateRight", degrees=0)
+
+event = controller.step("MoveAhead")
+
+controller.step(
+    action="PickupObject",
+    objectId="SaltShaker|+01.19|+00.90|-01.80",
+    forceAction=False,
+    manualInteract=False
+)
+
+
+event = controller.step("MoveLeft")
+event = controller.step("RotateRight", degrees=0)
+
+
+
+
+controller.step(
+    action="PutObject",
+    objectId="SaltShaker|+01.19|+00.90|-01.80",
+    forceAction=False,
+    placeStationary=True
+)
+
+
+
+controller.step(
+    action="DropHandObject",
+    forceAction=False
+)
+
+event = controller.step("MoveBack")
+
+
+ids_position = [{"id": obj["objectId"], "position": obj["position"]} for obj in controller.last_event.metadata["objects"]]
+
+
+agent_position = event.metadata['agent']["position"]
+
+
+
+
+
+controller.step(
+    action="PickupObject",
+    objectId="SaltShaker|+01.19|+00.90|-01.80",
+    forceAction=False,
+    manualInteract=False
+)
+
+
+
+ids = [obj["objectId"] for obj in controller.last_event.metadata["objects"]]
+
+
+event = controller.step("RotateRight", degrees=0)
