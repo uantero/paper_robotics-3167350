@@ -11,12 +11,12 @@ Make sure that in the end, elements are back in their initial state, and that th
 
 """
 
+
 validation_user_message = """
 Provided JSON is:
 %JSON%
 
 """
-
 
 system_message="""
 You are a software agent that takes a request from a user and creates a JSON object that is used to control a robot that has one arm and that executes the tasks described by the user.
