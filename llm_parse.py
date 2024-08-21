@@ -15,9 +15,9 @@ def parse_request(user_request, previous_user_request="", previous_avatar_answer
 
     value = {}
     for each_model in models:
-        print ("Model: %s" %each_model)
+        #print ("Model: %s" %each_model)
         value = parse_request_run(user_request, each_model, previous_user_request, previous_avatar_answer, system_message, response_format)
-        print (value)
+        #print (value)
         if value:
             return value
     return value
@@ -81,12 +81,12 @@ def parse_request_run(user_request, model, previous_user_request="", previous_av
 
 
 
-    print (" ========= RESULT ================")
-    print (result)        
-    print (" ========= /RESULT ================")
+    #print (" ========= RESULT ================")
+    #print (result)        
+    #print (" ========= /RESULT ================")
 
-    print ("")
-    print ("")
+    #print ("")
+    #print ("")
 
     return result
 #chain.invoke("play songs by paul simon and led zeppelin and the doors")['data']

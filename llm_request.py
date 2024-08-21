@@ -52,11 +52,15 @@ def llm_request_run(user_request, system_message="", previous_context="", previo
 
     # Default is JSON...
     if "text" in response_format:
+        #print ("----------------------- RETURNING TEXT ---------------------")
         return to_return
     
     # Make sure we have a proper JSON object
+    #print ("----------------------- RETURNING JSON ---------------------")
 
     # Try to extract JSON
+    #print ("......................................................")
+    #print (to_return)
     # Test 1
     if "```json" in to_return and '"answer"' in to_return:
         to_return = re.search(r'.*(\{\s*"answer"[^`]+)', to_return.replace("\n","")).groups()[0]
@@ -67,7 +71,7 @@ def llm_request_run(user_request, system_message="", previous_context="", previo
 
     # Test 3
     if to_return[0] != "{":
-        print (to_return)
+        #print (to_return)
         to_return = re.search(r'[^\{]*(\{.+\})', to_return.replace("\n","")).groups()[0]
     
     #logger.debug (">>>>>>>>>>>>>>>>>>>>>")

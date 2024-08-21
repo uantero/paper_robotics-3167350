@@ -1,6 +1,7 @@
 {
     "OBJECT_DATA": {
         "drawer": {
+            "name": "drawer",
             "synonims": ["drawer", "id_drawer"],
             "object_id": "Drawer|+00.64|+00.76|-00.65",
             "action_location": {
@@ -9,6 +10,7 @@
             }
         },
         "knife": {
+            "name": "knife",
             "synonims": ["knife", "id_knife"],
             "object_id": "Knife|+00.87|+00.70|-00.60",
             "action_location": {
@@ -18,6 +20,7 @@
         },
 
         "bread": {
+            "name": "bread",
             "synonims": ["bread"],
             "object_id": "Bread|-00.78|+01.00|+00.21",
             "action_location": {
@@ -26,6 +29,7 @@
             }
         },
         "tomato": {
+            "name": "tomato",
             "synonims": ["tomato"],
             "object_id": "Tomato|-00.87|+00.96|-00.10",
             "action_location": {
@@ -35,6 +39,7 @@
         },        
         
         "bread_sliced": {
+            "name": "bread_sliced",
             "synonims": ["bread_sliced"],
             "object_id": "Bread|-00.78|+01.00|+00.21|BreadSliced_1",
             "action_location": {
@@ -44,6 +49,7 @@
         },        
 
         "toaster": {
+            "name": "toaster",
             "synonims": ["toaster"],
             "object_id": "Toaster|+00.98|+00.90|+00.33",
             "action_location": {
@@ -53,6 +59,7 @@
         },        
 
         "bowl": {
+            "name": "bowl",
             "synonims": ["bowl"],
             "object_id": "Bowl|+00.79|+00.90|-00.12",
             "action_location": {
@@ -62,6 +69,7 @@
         },                
 
         "fridge": {
+            "name": "fridge",
             "synonims": ["fridge"],
             "object_id": "Fridge|+00.97|+00.00|+01.25",
             "action_location": {
@@ -70,6 +78,7 @@
             }
         }, 
         "egg": {
+            "name": "egg",
             "synonims": ["egg"],
             "object_id": "Egg|+00.83|+01.11|+01.10",
             "action_location": {

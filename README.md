@@ -25,10 +25,22 @@ First create (and activate) a Python3 virtual env:
     copy _env.sample .env
   (then edit the .env file you created)
 
+**Edit the file knowledge_base/system_specific.py and add there all the LLMs should know about your system:**
+
+ - A list of available items to interact with
+ - A list of possible actions that the robot can perform
+ - Hints and initial state of the system
+ - Add the required 'user_message' (what should the robot do?)
+
 **To run the system:**
 
-    asdas  
+    python main.py
 
-(this should copy the built files to the backend directory)
-        
+This will:
+ 
+ 1. Run the "code generating LLM" and generate the code
+ 2. Validate this new code with a second "code validating LLM". If something goes wrong, the system will go back to step 1
+ 3. If this initial validation is OK, the system will be simulated under AI2-THOR (see https://ai2thor.allenai.org/)
+
+(Note: the file 'known_info.json' contains the ID and the location of different items in the environment)        
 

@@ -6,6 +6,7 @@ from ai2thor.controller import Controller
 
 class STATE_MACHINE:
     def __init__(self, filename='sample.json'):
+        object_in_hand = None
         self.controller = Controller()
         # This reads the information that should be known 
         # (ID of required objects, such as the fridge or the tomato)
@@ -53,6 +54,11 @@ class STATE_MACHINE:
         self.controller.step(action="Teleport",position=object_info["action_location"]["position"],rotation=object_info["action_location"]["rotation"])
         event = self.refresh()
         
+    # Update object's location
+    def update_object_location(self, object_id):
+        event = self.refresh()
+        self.known_info["OBJECT_DATA"][object_id]["action_location"]["position"]= event.metadata["agent"]["position"]
+        self.known_info["OBJECT_DATA"][object_id]["action_location"]["rotation"]= event.metadata["agent"]["rotation"]
 
     # Check if an object is inside another element
     def check_object_inside(self, receptacle_object_type, object_type):
@@ -186,6 +192,7 @@ class STATE_MACHINE:
             )            
 
         elif each_task["SKILL"] == "PickupObject":
+            self.object_in_hand=self.interpret_variable(each_task["PARAMETERS"]["objectId"])
             controller.step(
                 action="PickupObject",
                 objectId=self.interpret_variable(each_task["PARAMETERS"]["objectId"])["object_id"],#"Fridge|+00.97|+00.00|+01.25",
@@ -193,16 +200,26 @@ class STATE_MACHINE:
             )            
 
         elif each_task["SKILL"] == "DropHandObject":
+            # Update object position
+            self.update_object_location(self.object_in_hand["name"])
+
             controller.step(
                 action="DropHandObject",
                 forceAction=False
             )            
+            self.object_in_hand=None
 
         elif each_task["SKILL"] == "PutObject":
+            
+            # Update object position
+            self.update_object_location(self.object_in_hand["name"])
+
             controller.step(
                 action="PutObject",
                 objectId=self.interpret_variable(each_task["PARAMETERS"]["objectId"])["object_id"],#"Fridge|+00.97|+00.00|+01.25",
             )            
+            self.object_in_hand=None
+
 
         elif each_task["SKILL"] == "TurnOn":
             controller.step(
