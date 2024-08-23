@@ -84,15 +84,16 @@ def validate(json_filename, user_message, validation_user_message, validation_sy
 
           - Another "Final state" line with the element's final state after all actions
           
-          - A final 'Check for order actions errors' line. In this line, check for errors following this guide (if an error is found, add '* ERROR FOUND *' in the begininning of the line, and explain such error): 
-             · Check for required precedence in the following actions (if not met, remark there's an error): 
+          - A 'Check for order actions errors' line. In this line, check for errors in the action sequence order (but never complain about unnecessary repetition of actions) following this guide (if an error is found, add '* ERROR FOUND *' in the begininning of the line, and explain such error): 
                 - You can't put an element somewhere if you did not pick it before (every "put" needs a previous "pick")
                 - Moving an placing an element somewhere needs a previous action where the element is picked.
-                - Every action to close an element needs a previous action to open the element
-                - Every deactivation or switching off action needs a previous switching on action
+                - Every action to "close" an element needs a previous action to "open" the element
+                - Every "switch off" action needs a previous "switch on" action
                 - In order to pick things from closed elements we have to open them first
                             
-        
+
+        Generate error if some error was detected in the element analysis.
+
         Use the provided JSON: 
         %JSON%
 
