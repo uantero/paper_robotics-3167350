@@ -11,6 +11,7 @@ load_dotenv()
 SOURCE = os.getenv("SOURCE")
 
 def get_models():
+    #return ["Qwen/Qwen2-72B-Instruct"]
     return [ "meta-llama/Meta-Llama-3-70B-Instruct"]
     #return [ "meta-llama/Meta-Llama-3.1-70B-Instruct"]
     

@@ -6,40 +6,59 @@ from .system_specific import *
 
 ### THIS IS THE MAIN SYSTEM MESSAGE #############################
 
-system_message="""
-You are a software agent that takes a request from a user and creates a JSON object that is used to control a robot that has one arm and that executes the tasks described by the user.
+generate_step1_system_message="""
 
-You have to follow the next instructions:
+The environment where the robot operates is shown here:
+""" + ENVIRONMENT_INFO + """
 
-1) Create a plan with consecutive tasks that can achieve the user's request. Before executing each task in the plan, think about logic actions that should have been executed previously. In this plan, you decide which is the best order for the tasks in the sequence, in order to minimize movements (and to avoid two consecutive moves and/or to move somewhere and don't perform any action there). 
+This environment has these elements:""" + ELEMENTS_IN_SYSTEM + """
 
-2) As a robot, you can only move to certain locations and perform a certain set of actions. You can only interact with the following elements in your environment:""" + ELEMENTS_IN_SYSTEM + """
+The robot has the following characteristics: """ + ROBOT_INFO + """
 
-Unless specified otherwise, actions on each object should be executed in a location called '<object>_location' (where <object> is a reference to the object).
+The robot only has the next habilities:
+ - Move to a location
+ - Pick objects with its hand (maximum one object at the same time). Check if the object can be picked.
+ - Put objects in its hand into other objects
+ - Slice (for that, the robot has to have previously picked a knife)
+ - Open or close objects (which can be opened)
+ - Switch on or off electrical appliances
 
-3) Your goal is to try to achieve the user's desired final goal using the resources at your disposal.For that you have to split the user's request into a set of consecutive steps using a set of BASE_SKILLS. The user request has to be decomposed in a combination of the following BASE_SKILLS:""" + BASE_SKILLS + """
+Keep in mind that: """ + HINTS_AND_INITIAL_STATE + """
 
-   
+Divide the user specification into a set of object-centered sub-goals. Then split such sub-goals into a set of sub-subgoals, with a set of consecutive tasks centered on the objects and their manipulation. 
 
-4) In order to decompose the user's request into a sequence, the following guides should be applied:
-  > Higher level tasks are created doing consecutively the BASE_SKILLS. For example:     
+Take into consideration limitations on objects (avoid picking elements that can't be picked, picking things from inside closed elements, picking elements has to be done first moving to their location, etc). The robot should avoid holding more than one element in its hand in any moment. 
+
+Subgoals should be named: "** SUBGOAL <name of subgoal>"
+Sub-Subgoals should be named: "  > SUBSUBGOAL <name of subgoal>"
+
+In your output show the goals, subgoals (and sub-subgoals if they exist) and tasks without further explanation. To clearly identify subgoals, before and after each subgoal add this text: "################"
+
+"""
+
+generate_step2_system_message="""
+Analyze this text and extract all task described there. Then create a JSON of consecutive "tasks" that reflect such task sequence.
+_______________________________________________________________________________
+%GENERATED_TASK_DECOMPOSITION%
+_______________________________________________________________________________
+Info about the elements: """ + ELEMENTS_IN_SYSTEM + """
+
+Allowed commands for the robot: """ + BASE_SKILLS + """
+
 """ + BASE_SKILL_COMPOSITION + """
 
 
-
-5) Some actions have to be performed before others in certain order. Some hints: """ + HINTS_AND_INITIAL_STATE + """
-
-
-6) The JSON to program the robot has the following variables in it:
+The JSON to program the robot has the following variables in it:
     - MISSION_NAME: which represents a summary of the main goal described by the user, using a maximum of three words (written without accents or non-ascii characters) joined by '_'
     - TASKS: which represents the consecutive tasks to be perfomed. These tasks are represented as a JSON array of dictionaries, where each item has the fields: 
-        · a 'NAME' that describes a summary of what has to be performed in the task, using a maximum of three words (written without accents or non-ascii characters, joined by '_')
+        · a 'NAME' that describes a summary of the desired action, using a maximum of three words (written without accents or non-ascii characters, joined by '_'). 
         · a 'SKILL' that matches the BASE_SKILL that best suits for that action. Only BASE_SKILL names can be used here. 
-        · a 'PARAMETERS' a set of parameters that defines how the BASE SKILL has to be performed
+        · a 'DESCRIPTION' a few words explaining the desired action. 
+        · a 'LOCATION' field, indicating the location where the task is executed
+        · a 'PARAMETERS' a set of parameters that defines how the BASE SKILL has to be performed. Check the format specified for each BASE_SKILL to properly fill the PARAMETERS field.
         · a 'RESULT' object, which contains a string with the name of a variable
  
 Your output should only show a single JSON object, without extra explanations or characters.
-
 """
 
 

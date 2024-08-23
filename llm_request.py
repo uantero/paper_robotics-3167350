@@ -61,19 +61,25 @@ def llm_request_run(user_request, system_message="", previous_context="", previo
     # Try to extract JSON
     #print ("......................................................")
     #print (to_return)
+
+    # Test 0
+    if "```{" in to_return.replace("\n",""):
+        to_return = re.search(r'```(\{[^`]+\})', to_return.replace("\n","")).groups()[0]
+
     # Test 1
     if "```json" in to_return and '"answer"' in to_return:
         to_return = re.search(r'.*(\{\s*"answer"[^`]+)', to_return.replace("\n","")).groups()[0]
 
     # Test 2
-    if "```json" in to_return:
+    elif "```json" in to_return:
         to_return = to_return.split("```json")[1].split("```")[0]
 
     # Test 3
-    if to_return[0] != "{":
+    else:
         #print (to_return)
         to_return = re.search(r'[^\{]*(\{.+\})', to_return.replace("\n","")).groups()[0]
     
+
     #logger.debug (">>>>>>>>>>>>>>>>>>>>>")
     #logger.debug (to_return)
     #logger.debug ("<<<<<<<<<<<<<<<<<<<<<")
@@ -82,6 +88,7 @@ def llm_request_run(user_request, system_message="", previous_context="", previo
         ## DEMJSON is an error tolerant JSON manager
         ret_value = demjson.decode(to_return)
     except Exception as e:
+        logger.error ("\n--------------\n%s\n----------------\n" %to_return)
         logger.error ("[[%s]]" %e)
     
     return ret_value

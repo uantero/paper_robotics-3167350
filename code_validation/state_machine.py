@@ -6,8 +6,13 @@ from ai2thor.controller import Controller
 
 class STATE_MACHINE:
     def __init__(self, filename='sample.json'):
-        object_in_hand = None
+        self.object_in_hand = None
+        self.current_location = ""
+        self.filename = filename
         self.controller = Controller()
+        self.load()
+
+    def load(self):
         # This reads the information that should be known 
         # (ID of required objects, such as the fridge or the tomato)
         with open('./known_info.json') as user_file:
@@ -15,12 +20,12 @@ class STATE_MACHINE:
             self.known_info = json.loads(file_contents)
 
         # If no filename is specified, the system will use the name 'sample.json'
-        with open('./%s' %filename) as user_file:
+        with open('./%s' %self.filename) as user_file:
             file_contents = user_file.read()
             self.machine_json = json.loads(file_contents)    
 
         self.look_down()
-        print (" ---- STATE MACHINE STARTED -----")
+        print (" ---- STATE MACHINE STARTED -----")        
 
     # In some linux machines, some "empty" action is required to refresh the display
     def refresh(self):
@@ -51,7 +56,9 @@ class STATE_MACHINE:
     # Teleport to a position where the robot can interact with an object
     def teleport_to(self, object_name):        
         object_info = self.known_info["OBJECT_DATA"][object_name]
-        self.controller.step(action="Teleport",position=object_info["action_location"]["position"],rotation=object_info["action_location"]["rotation"])
+        event=self.controller.step(action="Teleport",position=object_info["action_location"]["position"],rotation=object_info["action_location"]["rotation"])
+        self.current_location = object_name
+        print (event)
         event = self.refresh()
         
     # Update object's location
@@ -100,8 +107,16 @@ class STATE_MACHINE:
 
     # Interpret different skills
     # this is used to "translate" between our skills and the simulator actions
-    def interpret_skill(self, each_task):
+    def interpret_skill(self, each_task, step_by_step):
         controller = self.controller
+
+        if each_task.get("LOCATION",""):
+            if self.current_location!=each_task.get("LOCATION",""):
+                print ("FIRST NEED TO MOVE TO SKILL LOCATION...")
+                self.teleport_to(each_task.get("LOCATION","").replace("_location",""))
+
+        #"location: fridge_location"
+
         if each_task["SKILL"] == "MoveRobot":
             print ("*")
             location = each_task["PARAMETERS"]["location"]
@@ -167,7 +182,7 @@ class STATE_MACHINE:
         elif each_task["SKILL"] == "SEQUENCE":
             for each_time in range(each_task["PARAMETERS"].get("REPEAT_TIMES",1)):
                 for each_subtask in each_task["PARAMETERS"]["CHILDREN"]:
-                    self.interpret_skill(each_subtask)
+                    self.interpret_skill(each_subtask, step_by_step)
 
         elif each_task["SKILL"] == "SliceObject":
             event=controller.step(
@@ -178,11 +193,12 @@ class STATE_MACHINE:
             print(event  )
 
         elif each_task["SKILL"] == "OpenObject":
-            controller.step(
+            event=controller.step(
                 action="OpenObject",
                 objectId=self.interpret_variable(each_task["PARAMETERS"]["objectId"])["object_id"],#"Fridge|+00.97|+00.00|+01.25",
                 forceAction=False
-            )       
+            )     
+            print (event)  
 
         elif each_task["SKILL"] == "CloseObject":
             controller.step(
@@ -191,33 +207,48 @@ class STATE_MACHINE:
                 forceAction=False
             )            
 
+        elif each_task["SKILL"] == "Wait":            
+            
+            print ("...WAITING...")    
+
         elif each_task["SKILL"] == "PickupObject":
             self.object_in_hand=self.interpret_variable(each_task["PARAMETERS"]["objectId"])
-            controller.step(
+            event=controller.step(
                 action="PickupObject",
                 objectId=self.interpret_variable(each_task["PARAMETERS"]["objectId"])["object_id"],#"Fridge|+00.97|+00.00|+01.25",
                 forceAction=False
-            )            
+            )     
+            print (event)       
 
         elif each_task["SKILL"] == "DropHandObject":
             # Update object position
-            self.update_object_location(self.object_in_hand["name"])
+            if (self.object_in_hand["name"]):
+                self.update_object_location(self.object_in_hand["name"])
 
-            controller.step(
-                action="DropHandObject",
-                forceAction=False
-            )            
+                controller.step(
+                    action="DropHandObject",
+                    forceAction=False
+                )            
             self.object_in_hand=None
 
         elif each_task["SKILL"] == "PutObject":
             
             # Update object position
-            self.update_object_location(self.object_in_hand["name"])
+            if self.object_in_hand["name"]:
+                self.update_object_location(self.object_in_hand["name"])
 
-            controller.step(
+            controller.step(action="MoveHeldObjectAhead", moveMagnitude=0.55 )
+
+            event=controller.step(
                 action="PutObject",
                 objectId=self.interpret_variable(each_task["PARAMETERS"]["objectId"])["object_id"],#"Fridge|+00.97|+00.00|+01.25",
-            )            
+            )     
+
+            event=controller.step(
+                action="DropHandObject"
+            )     
+            
+            print (event)       
             self.object_in_hand=None
 
 
@@ -247,16 +278,28 @@ class STATE_MACHINE:
         time.sleep(1)
 
     # Execute state machine
-    def execute(self):
+    def execute(self, step_by_step=True):
         machine_json = self.machine_json
         controller = self.controller
         self.refresh()
         time.sleep(0)
 
         for each_task in machine_json["TASKS"]:
-            print (each_task)
             ## -------------------
-            self.interpret_skill(each_task)            
+            self.refresh()
+            time.sleep(0.5)
+            if step_by_step:
+                print ("GOING TO EXECUTE:--------------")
+                print (each_task)
+                event=self.refresh()
+                user_input=input("\nPress 'enter' to continue, or 'q' to exit:: ")
+                if user_input=="q":
+                    break
+            else:
+                print (each_task)
+
+            self.interpret_skill(each_task, step_by_step)       
+
             
 
             
