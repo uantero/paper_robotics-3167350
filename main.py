@@ -15,7 +15,7 @@ OUTPUT_JSON_FILENAME = "output.json"
 
 
 TESTS={
-    "generate": 0,
+    "generate": 1,
     "validate": 1,
     "simulate": 0
 }

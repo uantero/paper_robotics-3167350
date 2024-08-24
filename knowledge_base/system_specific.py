@@ -4,7 +4,7 @@ I want you to help me creating a flow program for a robot.
 
 The user specification is described here between brackes:
 [
-   I want the robot to pick the knife, slice the tomato, and then slice the bread
+  I want the robot to prepare me a breakfast. First I want the robot to pick an egg from the fridge and fry it into the pan, then I want the robot to prepare me a slice of toasted bread and put that into the plate.
    
 ]
 """
@@ -12,6 +12,9 @@ The user specification is described here between brackes:
 ELEMENTS_IN_SYSTEM = """
   Info about the elements:
   - Egg: is inside the fridge. Location: fridge.
+  - Spatula: is on the countertop. Location: spatula.
+  - Stove: is a stove for cooking. Location: stove.
+  - Pan: a frying pan used for cooking. Location: pan.
   - Plate: an empty plate located on top of the countertop. Location: plate
   - Countertop: a countertop. Location: countertop
   - Basin: a kitchen sink. Location: basin

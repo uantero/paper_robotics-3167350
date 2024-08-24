@@ -253,11 +253,12 @@ class STATE_MACHINE:
 
 
         elif each_task["SKILL"] == "TurnOn":
-            controller.step(
+            event=controller.step(
                 action="ToggleObjectOn",
                 objectId=self.interpret_variable(each_task["PARAMETERS"]["objectId"])["object_id"],#"Fridge|+00.97|+00.00|+01.25",
                 forceAction=False
             )
+            print (event)
 
         elif each_task["SKILL"] == "TurnOff":
             controller.step(
