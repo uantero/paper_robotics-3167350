@@ -71,8 +71,8 @@
             "synonims": ["plate"],
             "object_id": "CounterTop|-01.24|+00.97|-00.64",
             "action_location": {
-                "position": {"x": -0.0, "y": 0.9009992480278015, "z": -1.25},  
-                "rotation": {"x": -0.0, "y": 270.0, "z": 0.0}
+                "position": {"x": -1.0, "y": 0.9009992480278015, "z": -2.0}, 
+                "rotation": {"x": -0.0, "y": 9.659345778345596e-06, "z": -0.0}
             }                        
         },
         "plate": {
@@ -94,6 +94,16 @@
                 "rotation": {"x": -0.0, "y": 90.00001525878906, "z": -0.0}
             }                        
         },
+
+        "stove_burner": {
+            "name": "stoveburner",
+            "synonims": ["stoveburner"],
+            "object_id": "StoveBurner|+00.84|+00.92|-01.50",
+            "action_location": {
+                "position": {"x": 0.25, "y": 0.9009992480278015, "z": -1.25}, 
+                "rotation": {"x": -0.0, "y": 90.00001525878906, "z": -0.0}
+            }                        
+        },        
 
         "pan": {
             "name": "pan",
@@ -127,6 +137,16 @@
             }
         },        
 
+        "bread_slicing_pad": {
+            "name": "bread slicing pad",
+            "synonims": ["bread slicing pad"],
+            "object_id": "Bread|-00.78|+01.00|+00.21",
+            "action_location": {
+                "position": {"x": 0.0, "y": 0.9009992480278015, "z": 0.25}, 
+                "rotation": {"x": -0.0, "y": 270.0, "z": 0.0}
+            }
+        },  
+
         "bread_toasted": {
             "name": "bread_sliced",
             "synonims": ["bread_sliced"],
@@ -136,6 +156,17 @@
                 "rotation": {"x": -0.0, "y": 270.0, "z": 0.0}
             }
         },        
+
+        "bread_sliced_toasted": {
+            "name": "bread_sliced",
+            "synonims": ["bread_sliced"],
+            "object_id": "Bread|-00.78|+01.00|+00.21|BreadSliced_1",
+            "action_location": {
+                "position": {"x": 0.0, "y": 0.9009992480278015, "z": 0.25}, 
+                "rotation": {"x": -0.0, "y": 270.0, "z": 0.0}
+            }
+        },        
+
 
         "toaster": {
             "name": "toaster",

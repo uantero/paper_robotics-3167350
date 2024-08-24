@@ -15,40 +15,35 @@ This environment has these elements:""" + ELEMENTS_IN_SYSTEM + """
 
 The robot has the following characteristics: """ + ROBOT_INFO + """
 
-The robot only has the next habilities:
- - Move to a location
- - Pick objects with its hand (maximum one object at the same time). Check if the object can be picked.
- - Put objects in its hand into other objects
- - Slice (for that, the robot has to have previously picked a knife)
- - Open or close objects (which can be opened)
- - Switch on or off electrical appliances
+Divide the user specification into a set of consecutive steps. Then, for each step, define a sequence of ACTIONSEQUENCEs (applied to a certain element) that the robot can execute. In any ACTIONSEQUENCE, clearly indicate with bulletpoints the different steps required to fulfill it, specify in detail those steps (also indicating which additional robot actions may require)
+
+Your output should show a list steps, divided into a list of ACTIONSEQUENCE on elements. To clearly identify each block, before and after each block add this text: "################"
 
 Keep in mind that: """ + HINTS_AND_INITIAL_STATE + """
-
-Divide the user specification into a set of object-centered sub-goals. Then split such sub-goals into a set of sub-subgoals, with a set of consecutive tasks centered on the objects and their manipulation. 
-
-Take into consideration limitations on objects (avoid picking elements that can't be picked, picking things from inside closed elements, picking elements has to be done first moving to their location, etc). The robot should avoid holding more than one element in its hand in any moment. 
-
-Subgoals should be named: "** SUBGOAL <name of subgoal>"
-Sub-Subgoals should be named: "  > SUBSUBGOAL <name of subgoal>"
-
-In your output show the goals, subgoals (and sub-subgoals if they exist) and tasks without further explanation. To clearly identify subgoals, before and after each subgoal add this text: "################"
 
 """
 
 generate_step2_system_message="""
-Analyze this text and extract all task described there. Then create a JSON of consecutive "tasks" that reflect such task sequence.
+Analyze the proposed plan here:
 _______________________________________________________________________________
 %GENERATED_TASK_DECOMPOSITION%
 _______________________________________________________________________________
-Info about the elements: """ + ELEMENTS_IN_SYSTEM + """
 
-Allowed commands for the robot: """ + BASE_SKILLS + """
+Consider 'ACTIONSEQUENCE's defined in:
+""" + ROBOT_INFO + """
 
+Your goal is to convert every action suggested into the plan into a set of consecutive BASE_SKILLS (only use allowed BASE_SKILL commands) for the robot. The goal here is to try to reproduce the plan using BASE_SKILLS of the robot. The BASE_SKILLS are: 
+""" + BASE_SKILLS + """
+
+One action described in the plan may be decomposed into one or more BASE_SKILL consecutive exection. 
+
+Consider that the environment only has these elements: """ + ELEMENTS_IN_SYSTEM + """
+
+Consider that:
 """ + BASE_SKILL_COMPOSITION + """
 
 
-The JSON to program the robot has the following variables in it:
+The output format of the JSON you should generate has the following variables in it:
     - MISSION_NAME: which represents a summary of the main goal described by the user, using a maximum of three words (written without accents or non-ascii characters) joined by '_'
     - TASKS: which represents the consecutive tasks to be perfomed. These tasks are represented as a JSON array of dictionaries, where each item has the fields: 
         · a 'NAME' that describes a summary of the desired action, using a maximum of three words (written without accents or non-ascii characters, joined by '_'). 
@@ -58,7 +53,7 @@ The JSON to program the robot has the following variables in it:
         · a 'PARAMETERS' a set of parameters that defines how the BASE SKILL has to be performed. Check the format specified for each BASE_SKILL to properly fill the PARAMETERS field.
         · a 'RESULT' object, which contains a string with the name of a variable
  
-Your output should only show a single JSON object, without extra explanations or characters.
+Your output should only show a single and correct JSON object, without any comments or extra explanation.
 """
 
 

@@ -112,7 +112,7 @@ class STATE_MACHINE:
 
         if each_task.get("LOCATION",""):
             if self.current_location!=each_task.get("LOCATION",""):
-                print ("FIRST NEED TO MOVE TO SKILL LOCATION...")
+                print ("FIRST NEED TO MOVE TO SKILL LOCATION... [%s]" %each_task.get("LOCATION",""))
                 self.teleport_to(each_task.get("LOCATION","").replace("_location",""))
 
         #"location: fridge_location"
@@ -237,16 +237,51 @@ class STATE_MACHINE:
             if self.object_in_hand["name"]:
                 self.update_object_location(self.object_in_hand["name"])
 
-            controller.step(action="MoveHeldObjectAhead", moveMagnitude=0.55 )
-
+            # First try...
+            print ("1) I try to put it there")
             event=controller.step(
                 action="PutObject",
-                objectId=self.interpret_variable(each_task["PARAMETERS"]["objectId"])["object_id"],#"Fridge|+00.97|+00.00|+01.25",
-            )     
+                placeStationary=True,
+                forceAction=True,
+                objectId =self.interpret_variable(each_task["PARAMETERS"]["objectId"])["object_id"],#"Fridge|+00.97|+00.00|+01.25",
+            )    
 
-            event=controller.step(
-                action="DropHandObject"
-            )     
+            # Second try...
+            if not event.metadata["lastActionSuccess"]:
+                print ("2) Second try")
+                self.refresh()
+                controller.step(
+                    action="MoveHeldObject",     
+                    ahead=2.5,
+                    right=0.5,
+                    up=0.8 
+                )
+                self.refresh()
+
+                event=controller.step(
+                    action="PutObject",
+                    placeStationary=True,
+                    forceAction=True,
+                    objectId =self.interpret_variable(each_task["PARAMETERS"]["objectId"])["object_id"],#"Fridge|+00.97|+00.00|+01.25",
+                )             
+                print (event)
+
+            # Second... just throw it
+            if not event.metadata["lastActionSuccess"]:
+                print ("3) Ok, I'll just throw it")                
+                self.look_up()
+                controller.step(
+                    action="MoveHeldObject",     
+                    ahead=2.5,
+                    right=0.55,
+                    up=0.6 
+                )
+                event=controller.step("MoveAhead")
+                event=controller.step("MoveAhead")
+                
+                event = controller.step(dict(action='DropHandObject', forceAction=True ))
+                self.look_down()     
+            
             
             print (event)       
             self.object_in_hand=None
@@ -272,7 +307,7 @@ class STATE_MACHINE:
             cv2_image = event.cv2image()
         
         else:
-            print ("UNKNOWN ACTION!!!!")
+            print ("UNKNOWN ACTION <%s>!!!!" %each_task["SKILL"])
             sys.exit(1)
 
         self.refresh()
