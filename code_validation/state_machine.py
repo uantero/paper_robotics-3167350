@@ -4,6 +4,8 @@ import sys
 import re
 from ai2thor.controller import Controller
 
+# A very simple state machine. It just reads states from a JSON file, and execute them sequentially
+# For a more robust approach, check Flexbotics in https://link.springer.com/chapter/10.1007/978-3-319-18833-1_11
 class STATE_MACHINE:
     def __init__(self, filename='sample.json'):
         self.object_in_hand = None
@@ -97,12 +99,14 @@ class STATE_MACHINE:
 
     # Regexp to use known_data
     def interpret_variable(self, what):
+        OBJECT_DATA = self.known_info["OBJECT_DATA"]
         if "$" in str(what):
             value = re.sub("\$\{id_([^\}]+)\}",r'\g<1>', what)
-            value = value.lower()
-            OBJECT_DATA = self.known_info["OBJECT_DATA"]
+            value = value.lower()            
             object_info = OBJECT_DATA.get(value.replace("id_",""),{})        
-            return object_info        
+            return object_info    
+        elif what in OBJECT_DATA:
+            return OBJECT_DATA[what]
         return what
 
     # Interpret different skills

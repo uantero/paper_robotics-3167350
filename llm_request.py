@@ -1,4 +1,6 @@
 from langchain.chat_models import ChatOpenAI
+from langchain.globals import set_debug
+
 import re
 import demjson3 as demjson
 
@@ -6,7 +8,9 @@ from llm_log import *
 
 import llm_setup
 
-# Parse the user's request
+set_debug(False)
+
+# Parse the user's request and return a JSON object
 def llm_request(user_request, system_message="", previous_context="", previous_user_request="", response_format=""):
 
     models = llm_setup.get_models()
@@ -30,6 +34,7 @@ def llm_request(user_request, system_message="", previous_context="", previous_u
     }
 
 
+# The actual request
 def llm_request_run(user_request, system_message="", previous_context="", previous_user_request="", model="", response_format=""):
 
     if previous_context:
@@ -55,14 +60,7 @@ def llm_request_run(user_request, system_message="", previous_context="", previo
         #print ("----------------------- RETURNING TEXT ---------------------")
         return to_return
     
-    # Make sure we have a proper JSON object
-    #print ("----------------------- RETURNING JSON ---------------------")
-
-    # Try to extract JSON
-    #print ("......................................................")
-    #print (to_return)
-
-    # Test 0
+    # Test 0 for proper JSON
     if "```{" in to_return.replace("\n",""):
         to_return = re.search(r'```(\{[^`]+\})', to_return.replace("\n","")).groups()[0]
 
@@ -79,11 +77,6 @@ def llm_request_run(user_request, system_message="", previous_context="", previo
         #print (to_return)
         to_return = re.search(r'[^\{]*(\{.+\})', to_return.replace("\n","")).groups()[0]
     
-
-    #logger.debug (">>>>>>>>>>>>>>>>>>>>>")
-    #logger.debug (to_return)
-    #logger.debug ("<<<<<<<<<<<<<<<<<<<<<")
-
     try:
         ## DEMJSON is an error tolerant JSON manager
         ret_value = demjson.decode(to_return)
@@ -92,4 +85,4 @@ def llm_request_run(user_request, system_message="", previous_context="", previo
         logger.error ("[[%s]]" %e)
     
     return ret_value
-#chain.invoke("play songs by paul simon and led zeppelin and the doors")['data']
+

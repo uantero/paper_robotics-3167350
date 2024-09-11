@@ -1,17 +1,20 @@
 import os
 from dotenv import load_dotenv
 from langchain.chat_models import ChatOpenAI
+from langchain.globals import set_debug
+
 
 # Load info from .env file
 load_dotenv()
 
+set_debug(False)
 
-#SOURCE = "TPC" #  
 
+# Name of LLM provider
 SOURCE = os.getenv("SOURCE")
 
 def get_models():
-    #return ["Qwen/Qwen2-72B-Instruct"]
+    # In this paper we use LLAMA3
     return [ "meta-llama/Meta-Llama-3-70B-Instruct"]
     #return [ "meta-llama/Meta-Llama-3.1-70B-Instruct"]
     

@@ -4,7 +4,11 @@ import time
 
 
 # This will simulate everything in AI2-THOR
-
+# It will check that the:
+#  - Fridge was closed
+#  - Bread is toasted
+#  - Tomatp is in the fridge
+#  - Egg is in bowl
 def validate(filename="output.json"):
     #if len(sys.argv)>1:
     #    filename=sys.argv[1]
@@ -24,7 +28,9 @@ def validate(filename="output.json"):
     fridge_closed = not sm.check_object_open("Fridge")
 
     print ("\n")
-    if (bread_in_fridge and fridge_closed and bread_is_cooked and
+
+    # This will look for: fridge closed, bread toasted, tomato in fridge and egg in bowl
+    if (fridge_closed and bread_is_cooked and
         tomato_in_fridge and egg_in_bowl):
 
         print ("[[ ------------------ ]]")
@@ -36,7 +42,6 @@ def validate(filename="output.json"):
         print ("[[ --------- ]]")
         print ("Fridge closed: %s" %fridge_closed)
         print ("Bread is toasted: %s" %bread_is_cooked)
-        print ("Bread in fridge: %s" %bread_in_fridge)
         print ("Tomato in fridge: %s" %tomato_in_fridge)
         print ("Egg in bowl: %s" %egg_in_bowl)
 

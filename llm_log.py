@@ -25,9 +25,9 @@ class CustomFormatter(logging.Formatter):
 
 
 logger = logging.getLogger("CHATBOTICS")
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
+ch.setLevel(logging.INFO)
 
 ch.setFormatter(CustomFormatter())
 
